@@ -78,6 +78,10 @@
 2. **Configure Claude Desktop**
    
    Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
+
+   ```open -a TextEdit ~/Library/"Application Support"/Claude/claude_desktop_config.json
+   ```
+
    ```json
    {
      "mcpServers": {
@@ -89,12 +93,12 @@
    }
    ```
 
-3. **Test the bot**
+4. **Test the bot**
    ```bash
    python src/mcp_server.py
    ```
 
-4. **Restart Claude Desktop** and start roasting bad takes!
+5. **Restart Claude Desktop** and start roasting bad takes!
 
 ## 💬 How It Works
 
