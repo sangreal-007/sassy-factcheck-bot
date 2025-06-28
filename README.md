@@ -79,7 +79,8 @@
    
    Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 
-   ```open -a TextEdit ~/Library/"Application Support"/Claude/claude_desktop_config.json
+   ```bash
+   open -a TextEdit ~/Library/"Application Support"/Claude/claude_desktop_config.json
    ```
 
    ```json
