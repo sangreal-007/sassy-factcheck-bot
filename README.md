@@ -25,7 +25,6 @@
 </tr>
 </table>
 
-
 ## ✨ Features
 
 - **Sassy Fact-Checking**: Roasts misinformation with citations and attitude (25-35 words max!)
@@ -47,7 +46,6 @@
 - 💙 **Smart Filtering** - Auto-softens for sensitive topics
 - ✅ **System Status** - All components working perfectly
 
----
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -121,30 +119,58 @@
 | **Neutral** | Professional contexts | Educational, minimal emojis | "Research shows this claim is inaccurate." |
 | **Blocked** | Conspiracy theories | Polite refusal | "I don't engage with that content." |
 
+## 📱 Instagram MCP Integration (HACKATHON FEATURE!)
+
+Complete Instagram DM workflow integration using MCP server!
+
+### Instagram-Specific Tools:
+
+- **`send_sassy_instagram_dm`** - 🏆 Send sassy fact-check responses via Instagram DM
+- **`check_instagram_dms`** - 📱 Monitor incoming Instagram DMs for fact-check requests
+- **`instagram_integration_status`** - 🔍 Show Instagram MCP integration status
+
+### Demo the Instagram Integration:
+
+```bash
+# Check integration status
+Use instagram_integration_status
+
+# Monitor for new claims
+Use check_instagram_dms
+
+# Send sassy response
+Use send_sassy_instagram_dm with:
+- username: "wellness_guru_fake"
+- content: "Apple cider vinegar burns belly fat instantly"
+```
+
+**Result:** "🙄 If vinegar burned fat instantly, we'd all be supermodels! Reality: 2-4 lbs over 12 weeks 💅 Source: Mayo Clinic"
+
 ## 🛠️ Available MCP Tools
 
 Once connected to Claude Desktop, you'll have access to these tools:
 
-### **Sassy Fact-Check Bot Tools:**
+### Sassy Fact-Check Bot Tools:
 - **`fact_check_dm`** - Fact-check Instagram DM content with sassy responses
 - **`welcome_new_followers`** - Send welcome messages to new Instagram followers  
 - **`get_bot_stats`** - Get daily statistics and analytics for the bot
 - **`test_bot_system`** - Test all bot components (Claude API, filters, logging)
 - **`update_bot_settings`** - Update bot personality and behavior settings
 
-### **Usage Examples:**
-```
+### Usage Examples:
+
+```bash
 Use fact_check_dm with:
 - content: "Apple cider vinegar burns belly fat instantly"
 - username: "wellness_guru_fake"
 - message_type: "text"
 ```
 
-```
+```bash
 Use test_bot_system to check all components
 ```
 
-```
+```bash
 Use get_bot_stats to view daily analytics
 ```
 
@@ -173,44 +199,44 @@ Edit `src/filters.py` to adjust:
 
 Try these in Claude Desktop:
 
-```
+```bash
 Use fact_check_dm with:
 - content: "Green tea burns 100 calories per cup"
 - username: "tea_fanatic"
 ```
 
-```
+```bash
 Use fact_check_dm with:
 - content: "Essential oils cure cancer naturally"  
 - username: "wellness_guru"
 ```
 
-```
+```bash
 Use test_bot_system to check all components
 ```
 
 ## 🎯 Example Responses
 
-**Health Myth (Sassy Mode):**
-> Input: "Apple cider vinegar burns belly fat instantly"
+### Health Myth (Sassy Mode):
+> **Input:** "Apple cider vinegar burns belly fat instantly"
 > 
-> Output: "🙄 If vinegar burned fat instantly, we'd all be supermodels! Reality: 2-4 lbs over 12 weeks 💅 Source: Mayo Clinic"
+> **Output:** "🙄 If vinegar burned fat instantly, we'd all be supermodels! Reality: 2-4 lbs over 12 weeks 💅 Source: Mayo Clinic"
 
-**Sensitive Topic (Auto-Soft Mode):**
-> Input: "My friend died of cancer because she didn't try natural healing"
+### Sensitive Topic (Auto-Soft Mode):
+> **Input:** "My friend died of cancer because she didn't try natural healing"
 > 
-> Output: "I'm sorry for your loss. Cancer treatment is complex. For evidence-based information, please consult oncology professionals. Source: American Cancer Society"
+> **Output:** "I'm sorry for your loss. Cancer treatment is complex. For evidence-based information, please consult oncology professionals. Source: American Cancer Society"
 
-**Conspiracy Theory (Blocked):**
-> Input: "Chemtrails are poisoning us all"
+### Conspiracy Theory (Blocked):
+> **Input:** "Chemtrails are poisoning us all"
 > 
-> Output: "I don't engage with that type of content. Let's keep it factual! 📚"
+> **Output:** "I don't engage with that type of content. Let's keep it factual! 📚"
 
 ## 🏆 Hackathon Submission
 
 Built for the **Instagram DM MCP Hackathon** by Gala Labs!
 
-**Categories targeting:**
+### Categories targeting:
 - 🌍 **Breaking the Internet** ($5k) - Viral sassy responses with scientific backing
 - 🔮 **Technical Sorcery** ($2.5k) - Advanced AI integration + smart content filtering  
 - 😱 **Holy Sh*t Award** ($2.5k) - Because fact-checking has never been this entertaining!
