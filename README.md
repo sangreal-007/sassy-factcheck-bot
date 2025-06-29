@@ -77,22 +77,33 @@
 
 2. **Configure Claude Desktop**
    
-   Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
+   First, get your exact paths:
+   ```bash
+   # Navigate to your project and get exact paths
+   cd sassy-factcheck-bot
+   pwd  # Shows your project directory
+   echo "Python path: $(pwd)/venv/bin/python"
+   echo "Script path: $(pwd)/src/mcp_server.py"
+   ```
 
+   Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
    ```bash
    open -a TextEdit ~/Library/"Application Support"/Claude/claude_desktop_config.json
    ```
-
    ```json
    {
      "mcpServers": {
        "sassy_factcheck": {
-         "command": "/full/path/to/sassy-factcheck-bot/venv/bin/python",
-         "args": ["/full/path/to/sassy-factcheck-bot/src/mcp_server.py"]
+         "command": "/Users/yourusername/sassy-factcheck-bot/venv/bin/python",
+         "args": ["/Users/yourusername/sassy-factcheck-bot/src/mcp_server.py"]
        }
      }
    }
    ```
+
+   **⚠️ Important:** Replace `/Users/yourusername/` with your actual path from the `pwd` command above. Don't use `/full/path/to/` - use your real paths!
+
+   
 
 4. **Test the bot**
    ```bash
