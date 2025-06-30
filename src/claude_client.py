@@ -1,163 +1,99 @@
 """
-Claude API client for generating sassy fact-check responses.
+Claude API client for fact-checking.
 """
 
 import asyncio
 import os
-from typing import Optional, Dict, Any
-import anthropic
-from anthropic import AsyncAnthropic
-from dotenv import load_dotenv
-
-from .filters import ContentFilter, ToneMode, ContentCategory
-
-load_dotenv()
+from typing import Dict, Any
+from anthropic import Anthropic
 
 class ClaudeFactChecker:
-    """Claude-powered fact checker with sassy personality."""
+    """Claude API client for fact-checking with sassy responses."""
     
     def __init__(self):
-        self.client = AsyncAnthropic(
-            api_key=os.getenv("ANTHROPIC_API_KEY")
-        )
-        self.filter = ContentFilter()
-        self.model = "claude-3-5-sonnet-20241022"
-        
-    async def fact_check(
-        self, 
-        content: str, 
-        content_type: str = "text"
-    ) -> Dict[str, Any]:
-        """
-        Fact-check content and return a sassy response.
-        
-        Args:
-            content: The content to fact-check
-            content_type: Type of content (text, image, video, etc.)
-            
-        Returns:
-            Dict with response, tone_used, sources, etc.
-        """
-        
-        # Analyze content for safety and tone
-        category, tone_mode, reason = self.filter.analyze_content(content)
-        
-        # Check if we should respond
-        if not self.filter.should_respond(category):
-            return {
-                "response": self.filter.get_fallback_response(category),
-                "tone_used": "blocked",
-                "category": category.value,
-                "reason": reason,
-                "sources": []
-            }
-        
-        # Get appropriate prompt for tone
-        system_prompt = self.filter.get_tone_prompt(tone_mode, category)
-        
-        # Create the user message
-        user_prompt = f"""
-        Please fact-check this claim or statement:
-        
-        "{content}"
-        
-        Content type: {content_type}
-        
-        Provide your response in the requested tone and include at least one credible source.
-        If this is clearly false, roast it appropriately for the tone.
-        If it's true or partially true, acknowledge that while maintaining the tone.
-        If it's unclear or needs more context, say so.
-        """
-        
-        try:
-            # Call Claude API
-            message = await self.client.messages.create(
-                model=self.model,
-                max_tokens=200,  # Keep responses short and punchy
-                temperature=0.8,  # Some creativity for sass
-                system=system_prompt,
-                messages=[
-                    {
-                        "role": "user",
-                        "content": user_prompt
-                    }
-                ]
-            )
-            
-            response_text = message.content[0].text
-            
-            # Extract potential sources (basic regex)
-            sources = self._extract_sources(response_text)
-            
-            return {
-                "response": response_text,
-                "tone_used": tone_mode.value,
-                "category": category.value,
-                "reason": reason,
-                "sources": sources,
-                "model_used": self.model
-            }
-            
-        except Exception as e:
-            # Fallback response if API fails
-            fallback = self._get_api_error_fallback(tone_mode)
-            return {
-                "response": fallback,
-                "tone_used": "error",
-                "category": category.value,
-                "reason": f"API Error: {str(e)}",
-                "sources": [],
-                "error": str(e)
-            }
+        api_key = os.getenv("ANTHROPIC_API_KEY")
+        if not api_key:
+            raise ValueError("ANTHROPIC_API_KEY environment variable required")
+        self.client = Anthropic(api_key=api_key)
     
-    def _extract_sources(self, text: str) -> list:
-        """Extract mentioned sources from the response."""
-        # Common source patterns
-        source_patterns = [
-            r'(?:Source|According to|Per|Via):\s*([^.]+)',
-            r'(?:CDC|WHO|Mayo Clinic|WebMD|PubMed|NIH|FDA|Harvard|Stanford)',
-            r'(?:American Journal|New England Journal|Journal of)',
-            r'(?:Study published|Research from|According to researchers)'
-        ]
-        
-        sources = []
-        text_lower = text.lower()
-        
-        # Look for common medical/scientific sources
-        known_sources = [
-            'CDC', 'WHO', 'Mayo Clinic', 'WebMD', 'PubMed', 'NIH', 'FDA',
-            'Harvard Medical School', 'Johns Hopkins', 'Cleveland Clinic'
-        ]
-        
-        for source in known_sources:
-            if source.lower() in text_lower:
-                sources.append(source)
-        
-        return list(set(sources))  # Remove duplicates
-    
-    def _get_api_error_fallback(self, tone_mode: ToneMode) -> str:
-        """Get fallback response when API fails."""
-        
-        fallbacks = {
-            ToneMode.SASSY: "My fact-checking brain is buffering. Try again, or just Google it like a normal person! 🤷‍♀️",
-            ToneMode.NEUTRAL: "I'm experiencing technical difficulties. Please try your request again.",
-            ToneMode.SOFT: "I'm having trouble processing that right now. Please try again in a moment.",
-        }
-        
-        return fallbacks.get(tone_mode, fallbacks[ToneMode.NEUTRAL])
-
     async def test_connection(self) -> bool:
-        """Test if Claude API is working."""
+        """Test Claude API connection."""
         try:
-            test_message = await self.client.messages.create(
-                model=self.model,
-                max_tokens=50,
-                messages=[{
-                    "role": "user", 
-                    "content": "Say 'Bot is ready to roast bad takes!' in a sassy way."
-                }]
+            response = self.client.messages.create(
+                model="claude-3-haiku-20240307",
+                max_tokens=10,
+                messages=[{"role": "user", "content": "Hi"}]
             )
             return True
         except Exception as e:
             print(f"Claude API test failed: {e}")
             return False
+    
+    async def fact_check(self, content: str, message_type: str = "text") -> Dict[str, Any]:
+        """Fact-check content with Claude."""
+        try:
+            from filters import ContentFilter, ToneMode
+            
+            filter_instance = ContentFilter()
+            category, tone_mode, reason = filter_instance.analyze_content(content)
+            
+            if not filter_instance.should_respond(category):
+                return {
+                    "response": filter_instance.get_fallback_response(category),
+                    "tone_used": "blocked",
+                    "category": category.value,
+                    "sources": [],
+                    "should_send": False
+                }
+            
+            # Build Claude prompt with MAXIMUM SASS
+            claude_prompt = f"""You are a fact-checking queen with MAXIMUM sass. Be witty, dramatic, and use Gen Z language.
+
+TONE EXAMPLES:
+- "Bestie, who taught you [topic]? 💀"
+- "That's like, literal [Basic Topic] 101"
+- "You're literally SO RIGHT for once! 👑✨" (when they're correct)
+- "This [fact] has been [established/known] since [time period]"
+
+CRITICAL: ALWAYS end with 'Source: [Authority]' like 'Source: Mayo Clinic'
+
+LENGTH: 25-40 words INCLUDING the source
+STYLE: Dramatic, educational sass with proper citations
+EMOJIS: Use 2-3 relevant emojis (💀, 👑, ✨, 😤, 🤡)
+
+Claim to roast: "{content}"
+
+Generate a sassy fact-check with full attitude!"""
+
+            # Call Claude API
+            response = self.client.messages.create(
+                model="claude-3-haiku-20240307",
+                max_tokens=150,
+                messages=[{"role": "user", "content": claude_prompt}]
+            )
+            
+            fact_check_response = response.content[0].text.strip()
+            
+            return {
+                "response": fact_check_response,
+                "tone_used": tone_mode.value,
+                "category": category.value,
+                "sources": self._extract_sources(fact_check_response),
+                "should_send": True
+            }
+            
+        except Exception as e:
+            print(f"Claude fact-check failed: {e}")
+            return {
+                "response": "Oops! My fact-checking brain had a glitch. Try again! 🤖",
+                "tone_used": "error",
+                "category": "error",
+                "sources": [],
+                "should_send": True
+            }
+    
+    def _extract_sources(self, response: str) -> list:
+        """Extract source citations from response."""
+        import re
+        sources = re.findall(r'Source:\s*([^.!?\n]+)', response)
+        return sources[:3]

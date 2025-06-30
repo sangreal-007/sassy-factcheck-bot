@@ -1,0 +1,3 @@
+[submodule "external/instagram_dm_mcp"]
+	path = external/instagram_dm_mcp
+	url = https://github.com/trypeggy/instagram_dm_mcp.git

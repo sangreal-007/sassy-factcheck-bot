@@ -41,3 +41,7 @@ Thumbs.db
 # Other
 node_modules/
 .coverage
+interactions.json
+seen_followers.json
+*.bak
+temp_*

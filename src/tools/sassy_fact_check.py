@@ -10,8 +10,8 @@ from datetime import datetime
 from typing import Dict, List, Optional, Any
 from pathlib import Path
 
-from ..claude_client import ClaudeFactChecker
-from ..filters import ContentFilter, ContentCategory, ToneMode
+from claude_client import ClaudeFactChecker
+from filters import ContentFilter, ContentCategory, ToneMode
 
 class SassyFactChecker:
     """Main fact-checking engine with sassy personality."""
