@@ -30,7 +30,7 @@
 - **Sassy Fact-Checking**: Roasts misinformation with citations and attitude (25-35 words max!)
 - **Smart Content Filtering**: Auto-adjusts tone for sensitive topics  
 - **Multi-Response Modes**: Sassy, soft, neutral, and blocked responses
-- **Claude Desktop Integration**: Works as MCP server with Claude Desktop
+- **Dual MCP Architecture**: Instagram MCP + Sassy Bot MCP working together
 - **Analytics Tracking**: Logs interactions for daily sass statistics
 - **Safety First**: Blocks conspiracy theories, softens for grief/trauma
 
@@ -38,13 +38,14 @@
 
 *I built a sassy fact-checking AI that integrates with Instagram DMs. Watch it analyze health myths and generate perfect responses with citations and attitude!*
 
-🎬 **Watch the full demo here** → [https://youtu.be/T88oVghXzVw](https://youtu.be/T88oVghXzVw)
+🔥 **[Real Mode Demo](https://youtu.be/9XXiM9s8u8Q)**  
+🎯 **[Demo Mode Demo](https://youtu.be/T88oVghXzVw)**
 
 ### Demo Highlights:
-- 🔥 **Health Myth Busting** - Apple cider vinegar claims demolished
-- ⚡ **Safety Alerts** - Dangerous advice shut down instantly  
-- 💙 **Smart Filtering** - Auto-softens for sensitive topics
-- ✅ **System Status** - All components working perfectly
+- 🔥 **Health Myth Busting** — Apple cider vinegar claims demolished  
+- ⚡ **Safety Alerts** — Dangerous advice shut down instantly  
+- 💙 **Smart Filtering** — Auto-softens for sensitive topics  
+- ✅ **System Status** — All components working perfectly
 
 ## 🚀 Quick Start
 
@@ -52,12 +53,13 @@
 
 - Python 3.11+
 - [Claude Desktop App](https://claude.ai/desktop)
-- Instagram account (for future DM integration)
+- [Instagram DM MCP](https://github.com/gala-labs/instagram-dm-mcp) by Gala Labs
+- Instagram account (for real mode)
 - Anthropic API key
 
 ### Installation
 
-1. **Clone and setup virtual environment**
+1. **Clone and set up virtual environment**
    ```bash
    git clone https://github.com/sangreal-007/sassy-factcheck-bot.git
    cd sassy-factcheck-bot
@@ -75,15 +77,15 @@
    pip install -r requirements.txt
    ```
 
-2. **Configure Claude Desktop**
+2. **Configure Claude Desktop for Dual MCP Setup**
+   
+   You need BOTH servers running for full functionality:
    
    First, get your exact paths:
    ```bash
    # Navigate to your project and get exact paths
    cd sassy-factcheck-bot
    pwd  # Shows your project directory
-   echo "Python path: $(pwd)/venv/bin/python"
-   echo "Script path: $(pwd)/src/mcp_server.py"
    ```
 
    Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
@@ -93,32 +95,93 @@
    ```json
    {
      "mcpServers": {
+       "instagram_dms": {
+         "command": "/Users/yourusername/.local/bin/uv",
+         "args": [
+           "run",
+           "--directory",
+           "/Users/yourusername/instagram_dm_mcp",
+           "python",
+           "src/mcp_server.py"
+         ]
+       },
        "sassy_factcheck": {
          "command": "/Users/yourusername/sassy-factcheck-bot/venv/bin/python",
-         "args": ["/Users/yourusername/sassy-factcheck-bot/src/mcp_server.py"]
+         "args": ["/Users/yourusername/sassy-factcheck-bot/src/mcp_server.py"],
+         "cwd": "/Users/yourusername/sassy-factcheck-bot"
        }
      }
    }
    ```
 
-   **⚠️ Important:** Replace `/Users/yourusername/` with your actual path from the `pwd` command above. Don't use `/full/path/to/` - use your real paths!
+   **⚠️ Important:** Replace `/Users/yourusername/` with your actual path from the `pwd` command above.
 
-   
-
-4. **Test the bot**
+3. **Test Both Servers**
    ```bash
+   # Terminal 1: Start Instagram MCP (Gala Labs)
+   cd ../instagram_dm_mcp
+   uv run python src/mcp_server.py
+   
+   # Terminal 2: Start Sassy Bot
+   cd sassy-factcheck-bot
+   source venv/bin/activate
    python src/mcp_server.py
    ```
 
-5. **Restart Claude Desktop** and start roasting bad takes!
+4. **Restart Claude Desktop** and start the complete dual MCP workflow!
+
+## 🎛️ Demo vs Real Mode
+
+Your bot supports both demo and real Instagram integration:
+
+### Demo Mode (Default - Perfect for Testing)
+```bash
+# In your .env file
+INSTAGRAM_REAL_MODE=false
+
+# Features:
+# ✅ Practice with fake health claims
+# ✅ Test sassy response generation  
+# ✅ Safe for development
+# ✅ No Instagram account needed
+```
+
+### Real Mode (Live Instagram Integration)
+```bash
+# In your .env file  
+INSTAGRAM_REAL_MODE=true
+
+# Features:
+# ✅ Real Instagram API via Gala Labs MCP
+# ✅ Actual DM conversations
+# ✅ Live fact-checking responses
+# ✅ Production-ready deployment
+```
+
+### Switching Modes
+```bash
+# Edit your .env file
+nano .env
+
+# Change this line:
+INSTAGRAM_REAL_MODE=false  # Demo mode
+# OR
+INSTAGRAM_REAL_MODE=true   # Real mode
+
+# Restart your sassy bot server
+python src/mcp_server.py
+```
+
+## ⚠️ Security Notice
+**🛡️ For Real Mode: Use a dedicated test Instagram account, never your main account!**
+Instagram actively detects automation and may restrict accounts. Create a throwaway account specifically for testing to protect your personal Instagram.
 
 ## 💬 How It Works
 
-### Fact-Checking Flow
-1. Use `fact_check_dm` tool in Claude Desktop
-2. Bot analyzes content for safety and tone  
-3. Claude generates short, sassy response with citation
-4. Response: *"🙄 Vinegar burns fat like I burn calories watching Netflix! Takes 12 weeks for 2 lbs 💅 Source: Mayo Clinic"*
+### Complete Dual MCP Workflow
+1. **Instagram MCP**: `list_chats` → See real conversations
+2. **Sassy Bot**: `generate_sassy_response` → Create viral response with source
+3. **Instagram MCP**: `send_message` → Send to real Instagram user
 
 ### Auto-Tone Detection
 - **Health myths** → Sassy roasting 🔥
@@ -135,59 +198,35 @@
 | **Neutral** | Professional contexts | Educational, minimal emojis | "Research shows this claim is inaccurate." |
 | **Blocked** | Conspiracy theories | Polite refusal | "I don't engage with that content." |
 
-## 📱 Instagram MCP Integration (HACKATHON FEATURE!)
-
-Complete Instagram DM workflow integration using MCP server!
-
-### Instagram-Specific Tools:
-
-- **`send_sassy_instagram_dm`** - 🏆 Send sassy fact-check responses via Instagram DM
-- **`check_instagram_dms`** - 📱 Monitor incoming Instagram DMs for fact-check requests
-- **`instagram_integration_status`** - 🔍 Show Instagram MCP integration status
-
-### Demo the Instagram Integration:
-
-```bash
-# Check integration status
-Use instagram_integration_status
-
-# Monitor for new claims
-Use check_instagram_dms
-
-# Send sassy response
-Use send_sassy_instagram_dm with:
-- username: "wellness_guru_fake"
-- content: "Apple cider vinegar burns belly fat instantly"
-```
-
-**Result:** "🙄 If vinegar burned fat instantly, we'd all be supermodels! Reality: 2-4 lbs over 12 weeks 💅 Source: Mayo Clinic"
 
 ## 🛠️ Available MCP Tools
 
-Once connected to Claude Desktop, you'll have access to these tools:
+### Sassy Bot MCP Tools (Response Generation):
+- **`generate_sassy_response`** - Create viral fact-check responses with sources
+- **`generate_welcome_message`** - Create welcome messages for new followers
+- **`check_instagram_dms`** - Show practice claims (demo mode) or guide to Instagram MCP (real mode)
+- **`instagram_integration_status`** - Show dual MCP integration status
 
-### Sassy Fact-Check Bot Tools:
-- **`fact_check_dm`** - Fact-check Instagram DM content with sassy responses
-- **`welcome_new_followers`** - Send welcome messages to new Instagram followers  
-- **`get_bot_stats`** - Get daily statistics and analytics for the bot
-- **`test_bot_system`** - Test all bot components (Claude API, filters, logging)
-- **`update_bot_settings`** - Update bot personality and behavior settings
+### Instagram MCP Tools (Messaging - via Gala Labs):
+- **`list_chats`** - See real Instagram conversations
+- **`send_message`** - Send responses to real Instagram users
+- **`get_user_followers`** - Check follower lists
+- **`get_thread_details`** - Get full conversation history
 
 ### Usage Examples:
 
 ```bash
-Use fact_check_dm with:
+Use generate_sassy_response with:
 - content: "Apple cider vinegar burns belly fat instantly"
 - username: "wellness_guru_fake"
-- message_type: "text"
 ```
 
 ```bash
-Use test_bot_system to check all components
+Use instagram_integration_status to check dual MCP setup
 ```
 
 ```bash
-Use get_bot_stats to view daily analytics
+Use list_chats to see real Instagram conversations
 ```
 
 ## 🔧 Configuration
@@ -198,6 +237,9 @@ Use get_bot_stats to view daily analytics
 INSTAGRAM_USERNAME=your_username
 INSTAGRAM_PASSWORD=your_password  
 ANTHROPIC_API_KEY=your_claude_key
+
+# Mode Selection
+INSTAGRAM_REAL_MODE=true  # true for real Instagram, false for demo
 
 # Optional
 ENABLE_SAFE_MODE=true  # Auto-soften for sensitive topics
@@ -216,19 +258,21 @@ Edit `src/filters.py` to adjust:
 Try these in Claude Desktop:
 
 ```bash
-Use fact_check_dm with:
+# Demo Mode Testing
+Use generate_sassy_response with:
 - content: "Green tea burns 100 calories per cup"
 - username: "tea_fanatic"
 ```
 
 ```bash
-Use fact_check_dm with:
-- content: "Essential oils cure cancer naturally"  
-- username: "wellness_guru"
+# Real Mode Testing
+Use list_chats to see real conversations
+Use generate_sassy_response for real claims
+Use send_message to send responses
 ```
 
 ```bash
-Use test_bot_system to check all components
+Use instagram_integration_status to check setup
 ```
 
 ## 🎯 Example Responses
@@ -252,26 +296,23 @@ Use test_bot_system to check all components
 
 Built for the **Instagram DM MCP Hackathon** by Gala Labs!
 
-### Categories targeting:
-- 🌍 **Breaking the Internet** ($5k) - Viral sassy responses with scientific backing
-- 🔮 **Technical Sorcery** ($2.5k) - Advanced AI integration + smart content filtering  
-- 😱 **Holy Sh*t Award** ($2.5k) - Because fact-checking has never been this entertaining!
-
-**Key Innovation:** Automatic tone adjustment based on content sensitivity while maintaining maximum sass for health misinformation.
+**Key Innovation:** Dual MCP architecture with automatic tone adjustment based on content sensitivity while maintaining maximum sass for health misinformation.
 
 ## 🛠️ Technical Architecture
 
-- **MCP Server**: Integrates with Claude Desktop as tool provider
+- **Dual MCP Setup**: Instagram MCP (Gala Labs) + Sassy Bot MCP working together
+- **Instagram Operations**: Real Instagram API via Gala Labs Instagram DM MCP  
+- **Response Generation**: Sassy Bot MCP with Claude API integration
 - **Content Filtering**: Smart categorization with tone recommendation
-- **AI Integration**: Claude 3.5 Sonnet for fact-checking and response generation
 - **Safety Layer**: Multi-level filtering for sensitive content
-- **Analytics**: JSON-based interaction logging with daily stats
+- **Mode Switching**: Demo/Real mode for development and production
 
 ## ⚠️ Important Notes
 
+- **Dual MCP Required**: Both Instagram MCP and Sassy Bot MCP must be running
 - **Virtual Environment Required**: macOS users must use virtual environments due to system Python restrictions
-- **Instagram Integration**: Designed to work with Instagram DM MCP server (login issues may occur)
-- **Demo Mode**: Bot can be tested via Claude Desktop tools even without Instagram connection
+- **Demo Mode**: Perfect for testing without Instagram account - uses practice claims
+- **Real Mode**: Connects to actual Instagram via Gala Labs MCP for live conversations
 - **Response Length**: Optimized for 25-35 word responses perfect for social media
 
 ## 🤝 Contributing
@@ -299,4 +340,4 @@ Built with 💅 and citations by **sangreal-007**
 
 ## 🚀 Hackathon Demo
 
-Ready to roast some bad takes? Clone this repo, follow the setup, and start serving facts with attitude through Claude Desktop! 🔥📚💅
+Ready to roast some bad takes? Clone this repo, follow the dual MCP setup, and start serving facts with attitude through Claude Desktop! 🔥📚💅
