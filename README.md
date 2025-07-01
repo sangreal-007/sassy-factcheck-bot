@@ -174,6 +174,7 @@ python src/mcp_server.py
 
 ## ⚠️ Security Notice
 **🛡️ For Real Mode: Use a dedicated test Instagram account, never your main account!**
+
 Instagram actively detects automation and may restrict accounts. Create a throwaway account specifically for testing to protect your personal Instagram.
 
 ## 💬 How It Works
