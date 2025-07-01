@@ -38,13 +38,14 @@
 
 *I built a sassy fact-checking AI that integrates with Instagram DMs. Watch it analyze health myths and generate perfect responses with citations and attitude!*
 
-🎬 **Watch the full demo here** → [https://youtu.be/T88oVghXzVw](https://youtu.be/T88oVghXzVw)
+🔥 **Real Mode Demo** → [https://youtu.be/9XXiM9s8u8Q](https://youtu.be/9XXiM9s8u8Q)
+🎯 **Demo Mode Demo** → [https://youtu.be/T88oVghXzVw](https://youtu.be/T88oVghXzVw)
 
 ### Demo Highlights:
-- 🔥 **Health Myth Busting** - Apple cider vinegar claims demolished
-- ⚡ **Safety Alerts** - Dangerous advice shut down instantly  
-- 💙 **Smart Filtering** - Auto-softens for sensitive topics
-- ✅ **System Status** - All components working perfectly
+- 🔥 **Health Myth Busting** — Apple cider vinegar claims demolished  
+- ⚡ **Safety Alerts** — Dangerous advice shut down instantly  
+- 💙 **Smart Filtering** — Auto-softens for sensitive topics  
+- ✅ **System Status** — All components working perfectly
 
 ## 🚀 Quick Start
 
@@ -58,7 +59,7 @@
 
 ### Installation
 
-1. **Clone and setup virtual environment**
+1. **Clone and set up virtual environment**
    ```bash
    git clone https://github.com/sangreal-007/sassy-factcheck-bot.git
    cd sassy-factcheck-bot
@@ -170,6 +171,10 @@ INSTAGRAM_REAL_MODE=true   # Real mode
 # Restart your sassy bot server
 python src/mcp_server.py
 ```
+
+## ⚠️ Security Notice
+**🛡️ For Real Mode: Use a dedicated test Instagram account, never your main account!**
+Instagram actively detects automation and may restrict accounts. Create a throwaway account specifically for testing to protect your personal Instagram.
 
 ## 💬 How It Works
 
