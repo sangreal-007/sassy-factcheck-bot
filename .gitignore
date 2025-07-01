@@ -45,3 +45,5 @@ interactions.json
 seen_followers.json
 *.bak
 temp_*
+src/sassy_factcheck_bot.egg-info/
+*.egg-info/
