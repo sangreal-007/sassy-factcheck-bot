@@ -38,8 +38,8 @@
 
 *I built a sassy fact-checking AI that integrates with Instagram DMs. Watch it analyze health myths and generate perfect responses with citations and attitude!*
 
-🔥 **Real Mode Demo** → [https://youtu.be/9XXiM9s8u8Q](https://youtu.be/9XXiM9s8u8Q)
-🎯 **Demo Mode Demo** → [https://youtu.be/T88oVghXzVw](https://youtu.be/T88oVghXzVw)
+🔥 **[Real Mode Demo](https://youtu.be/9XXiM9s8u8Q)**  
+🎯 **[Demo Mode Demo](https://youtu.be/T88oVghXzVw)**
 
 ### Demo Highlights:
 - 🔥 **Health Myth Busting** — Apple cider vinegar claims demolished  
